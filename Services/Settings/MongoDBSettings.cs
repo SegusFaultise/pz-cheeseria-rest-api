@@ -2,8 +2,8 @@
 {
     public class MongoDBSettings
     {
-        public string connection_string { get; set; }
-        public string database_name { get; set; }
-        public string collection_name { get; set; }
+        public required string ConnectionString { get; set; }
+        public required string DatabaseName { get; set; }
+        public required string CollectionName { get; set; }
     }
 }
