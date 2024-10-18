@@ -27,9 +27,6 @@ namespace PZCheeseriaRestApi.Models
         [BsonElement(CHEESE_PRICE_PER_KILO)]
         public decimal cheese_price_per_kilo { get; set; }
 
-        [BsonElement(CHEESE_PRICE_PER_POUND)]
-        public decimal cheese_price_per_pound {  get; set; } 
-
         [BsonElement(CHEESE_COLOR)]
         public required string cheese_color { get; set; }
 
