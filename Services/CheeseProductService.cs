@@ -5,11 +5,11 @@ using PZCheeseriaRestApi.Services.Settings;
 
 namespace PZCheeseriaRestApi.Services
 {
-    public class CheeseService
+    public class CheeseProductService
     {
         private readonly IMongoCollection<CheeseProductModel> _cheese_collection;
 
-        public CheeseService(IOptions<MongoDBSettings> mongodb_Settings, IMongoClient mongo_client)
+        public CheeseProductService(IOptions<MongoDBSettings> mongodb_Settings, IMongoClient mongo_client)
         {
             var mongo_database = mongo_client.GetDatabase(mongodb_Settings.Value.DatabaseName);
             _cheese_collection = mongo_database.GetCollection<CheeseProductModel>(mongodb_Settings.Value.CollectionName);

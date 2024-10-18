@@ -14,9 +14,9 @@ namespace PZCheeseriaRestApi.Controllers
         const int SEVER_ERROR_RESPONSE_CODE = 500;
         const string SERVER_ERROR_RESPONSE_MESSAGE = "An unexpected error occurred: ";
 
-        private readonly CheeseService _cheese_product_service;
+        private readonly CheeseProductService _cheese_product_service;
 
-        public CheeseProductController(CheeseService cheese_product_service)
+        public CheeseProductController(CheeseProductService cheese_product_service)
         {
             _cheese_product_service = cheese_product_service;
         }
@@ -56,7 +56,7 @@ namespace PZCheeseriaRestApi.Controllers
         {
             try
             {
-                var new_cheese_product_dto = CheeseModelMapper.ToModel(cheese_product_dto);
+                var new_cheese_product_dto = CheeseProductModelMapper.ToModel(cheese_product_dto);
 
                 await _cheese_product_service.CreateAsync(new_cheese_product_dto);
 
@@ -81,7 +81,7 @@ namespace PZCheeseriaRestApi.Controllers
         {
             try
             {
-                var new_updated_cheese_product_dto = CheeseModelMapper.ToModel(updated_cheese_product_dto);
+                var new_updated_cheese_product_dto = CheeseProductModelMapper.ToModel(updated_cheese_product_dto);
 
                 var cheese_product_id = await _cheese_product_service.GetByIdAsync(id) ?? 
                     throw new UpdateCheeseProductException($"Cheese product with id {id} not found.");
