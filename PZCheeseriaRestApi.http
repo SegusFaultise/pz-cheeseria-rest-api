@@ -1,6 +1,0 @@
-@PZCheeseriaRestApi_HostAddress = http://localhost:5106
-
-GET {{PZCheeseriaRestApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
