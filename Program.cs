@@ -7,6 +7,7 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure MongoDB settings
 builder.Services.Configure<MongoDBSettings>(
     builder.Configuration.GetSection("MongoDBSettings"));
 
@@ -20,10 +21,11 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
 // Register CheeseService to interact with the cheese collection
 builder.Services.AddSingleton<CheeseProductService>();
 
-// Add services to the container.
+// Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+// Swagger configuration
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc(
@@ -37,20 +39,24 @@ builder.Services.AddSwaggerGen(c =>
     });
 
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-
     c.IncludeXmlComments(xmlPath);
 });
 
-builder.Services.AddCors(
-options =>
+// Configure CORS
+builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
-    builder =>
+    options.AddPolicy("ProductionPolicy", builder =>
     {
-        builder.WithOrigins(
-            "https://localhost:7281")
+        builder.WithOrigins("https://yourproductiondomain.com")
+                 .AllowAnyHeader()
+                 .AllowAnyMethod();
+    });
+
+    options.AddPolicy("DevelopmentPolicy", builder =>
+    {
+        builder
+        .AllowAnyOrigin()
         .AllowAnyHeader()
         .AllowAnyMethod();
     });
@@ -60,24 +66,16 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors("ProductionPolicy");
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-if (app.Environment.IsProduction())
+else if (app.Environment.IsProduction())
 {
+app.UseCors("DevelopmentPolicy");
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-
-app.UseCors(
-builder =>
-{
-    builder
-    .AllowAnyOrigin()
-    .AllowAnyHeader()
-    .AllowAnyMethod();
-}
-);
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
