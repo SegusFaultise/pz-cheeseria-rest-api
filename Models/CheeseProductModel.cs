@@ -20,7 +20,7 @@ namespace PZCheeseriaRestApi.Models
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public required string id { get; set; }
+        public required string _id { get; set; }
 
         [BsonElement(CHEESE_PRODUCT_NAME)]
         public required string cheese_product_name { get; set; }

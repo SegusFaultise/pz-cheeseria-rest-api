@@ -15,19 +15,26 @@ namespace PZCheeseriaRestApi.Services
             _cheese_collection = mongo_database.GetCollection<CheeseProductModel>(mongodb_Settings.Value.CollectionName);
         }
 
-        public async Task<List<CheeseProductModel>> GetAllAsync() =>
+        public virtual async Task<List<CheeseProductModel>> GetAllAsync() =>
             await _cheese_collection.Find(_ => true).ToListAsync();
 
-        public async Task<CheeseProductModel?> GetByIdAsync(string id) =>
-            await _cheese_collection.Find(x => x.id == id).FirstOrDefaultAsync();
+        public async Task<CheeseProductModel> GetByIdAsync(string id) => 
+            await _cheese_collection.Find(x => x._id == id).FirstOrDefaultAsync();
 
-        public async Task CreateAsync(CheeseProductModel cheese_model) =>
+        public async Task<CheeseProductModel> GetByCheeseProductNameAsync(string cheese_product_name) => 
+            await _cheese_collection.Find(x => x.cheese_product_name == cheese_product_name).FirstOrDefaultAsync();
+
+        public virtual async Task CreateAsync(CheeseProductModel cheese_model) =>
             await _cheese_collection.InsertOneAsync(cheese_model);
 
-        public async Task UpdateAsync(string id, CheeseProductModel updated_cheese) =>
-            await _cheese_collection.ReplaceOneAsync(x => x.id == id, updated_cheese);
+        public virtual async Task UpdateAsync(string id, CheeseProductModel updated_cheese) =>
+            await _cheese_collection.ReplaceOneAsync(x => x._id == id, updated_cheese);
 
-        public async Task DeleteAsync(string id) =>
-            await _cheese_collection.DeleteOneAsync(x => x.id == id);
+        public virtual async Task<bool> DeleteAsync(string id)
+        {
+            var result = await _cheese_collection.DeleteOneAsync(x => x._id == id);
+
+            return result.DeletedCount > 0;
+        }
     }
 }

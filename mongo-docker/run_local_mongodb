@@ -1,0 +1,4 @@
+sudo docker stop mongodb_test
+sudo docker rm mongodb_test
+sudo docker run -d --name mongodb_test -p 27017:27017 mongo-custom
+sudo docker exec -it mongodb_test mongosh -u root -p example --authenticationDatabase admin

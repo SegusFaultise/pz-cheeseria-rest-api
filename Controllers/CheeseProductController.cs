@@ -28,17 +28,42 @@ namespace PZCheeseriaRestApi.Controllers
         [HttpGet("{id:length(24)}")]
         public async Task<ActionResult<CheeseProductModel>> GetCheeseProductById(string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("Cheese product id parameter cannot be null or empty.");
+            }
+
             try
             {
                 var cheese_product_id = await _cheese_product_service.GetByIdAsync(id) ?? 
                     throw new GetCheeseProductByIdException($"Cheese product with id {id} not found.");
 
-                if (id is null)
-                {
-                    throw new GetCheeseProductByIdException($"Cheese product id param {id} is null.");
-                }
-
                 return Ok(cheese_product_id);
+            }
+            catch (GetCheeseProductByIdException get_cheese_by_id_exception)
+            {
+                return BadRequest(get_cheese_by_id_exception.Message);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(SEVER_ERROR_RESPONSE_CODE, SERVER_ERROR_RESPONSE_MESSAGE + exception.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<CheeseProductModel>> GetCheeseProductByName(string cheese_product_name)
+        {
+            if (string.IsNullOrEmpty(cheese_product_name))
+            {
+                return BadRequest("Cheese product id parameter cannot be null or empty.");
+            }
+
+            try
+            {
+                var new_cheese_product_name = await _cheese_product_service.GetByCheeseProductNameAsync(cheese_product_name) ?? 
+                    throw new GetCheeseProductByIdException($"Cheese product with name {cheese_product_name} not found.");
+
+                return Ok(new_cheese_product_name);
             }
             catch (GetCheeseProductByIdException get_cheese_by_id_exception)
             {
@@ -65,7 +90,7 @@ namespace PZCheeseriaRestApi.Controllers
                     throw new PostCheeseProductException($"Cheese product body {new_cheese_product_dto} is null.");
                 }
 
-                return CreatedAtAction(nameof(Get), new { new_cheese_product_dto.id }, new_cheese_product_dto);
+                return CreatedAtAction(nameof(Get), new { new_cheese_product_dto._id }, CheeseProductModelMapper.ToDto(new_cheese_product_dto));
             } catch (PostCheeseProductException post_cheese_exception)
             {
                 return BadRequest(post_cheese_exception.Message);
@@ -91,7 +116,7 @@ namespace PZCheeseriaRestApi.Controllers
                     throw new UpdateCheeseProductException($"Cheese product body {updated_cheese_product_dto} is null.");
                 }
 
-                new_updated_cheese_product_dto.id = cheese_product_id.id;
+                new_updated_cheese_product_dto._id = cheese_product_id._id;
 
                 await _cheese_product_service.UpdateAsync(id, new_updated_cheese_product_dto);
 
