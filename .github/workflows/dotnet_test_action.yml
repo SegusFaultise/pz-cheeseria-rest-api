@@ -21,7 +21,7 @@ jobs:
       run: dotnet restore
 
     - name: Run mongodb docker instance
-      run: cd mongo_docker && ./run_local_mongodb
+      run: cd mongo_docker && sudo ./run_local_mongodb
 
     - name: Test
       run: dotnet test --no-build --verbosity normal
