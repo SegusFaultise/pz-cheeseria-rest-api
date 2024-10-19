@@ -40,7 +40,7 @@ builder.Services.AddSwaggerGen(c =>
 
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
-    //c.IncludeXmlComments(xmlPath);
+    c.IncludeXmlComments(xmlPath);
 });
 
 builder.Services.AddCors(
@@ -58,11 +58,16 @@ options =>
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
-
-//app.UseExceptionHandler("/Home/Error");
-//app.UseHsts();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+if (app.Environment.IsProduction())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
 
 app.UseCors(
 builder =>
