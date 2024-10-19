@@ -24,5 +24,5 @@ jobs:
       run:  cd mongo_docker && chmod +x ./run_local_mongodb && ./run_local_mongodb
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --verbosity normal
 
