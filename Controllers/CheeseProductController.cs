@@ -10,7 +10,6 @@ namespace PZCheeseriaRestApi.Controllers
 {
     [ApiController]
     [Route("pz-cheeseria-rest-api/[controller]")]
-    [EnableCors("AllowAll")]
     public class CheeseProductController : ControllerBase
     {
         const int SEVER_ERROR_RESPONSE_CODE = 500;
@@ -23,11 +22,15 @@ namespace PZCheeseriaRestApi.Controllers
             _cheese_product_service = cheese_product_service;
         }
 
+        [EnableCors]
         [HttpGet]
-        public async Task<ActionResult<List<CheeseProductModel>>> Get() =>
+        [Route("GetAllCheeseProducts")]
+        public async Task<ActionResult<List<CheeseProductModel>>> GetAllCheeseProducts() =>
             await _cheese_product_service.GetAllAsync();
 
+        [EnableCors]
         [HttpGet("{id:length(24)}")]
+        [Route("GetAllCheeseProductById")]
         public async Task<ActionResult<CheeseProductModel>> GetCheeseProductById(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -52,7 +55,9 @@ namespace PZCheeseriaRestApi.Controllers
             }
         }
 
+        [EnableCors]
         [HttpGet]
+        [Route("GetCheeseProductByName")]
         public async Task<ActionResult<CheeseProductModel>> GetCheeseProductByName(string cheese_product_name)
         {
             if (string.IsNullOrEmpty(cheese_product_name))
@@ -77,8 +82,9 @@ namespace PZCheeseriaRestApi.Controllers
             }
         }
 
-
+        [EnableCors]
         [HttpPost]
+        [Route("PostCheeseProduct")]
         public async Task<IActionResult> PostCheeseProduct([FromBody] CheeseProductDto cheese_product_dto)
         {
             try
@@ -92,7 +98,7 @@ namespace PZCheeseriaRestApi.Controllers
                     throw new PostCheeseProductException($"Cheese product body {new_cheese_product_dto} is null.");
                 }
 
-                return CreatedAtAction(nameof(Get), new { new_cheese_product_dto._id }, CheeseProductModelMapper.ToDto(new_cheese_product_dto));
+                return CreatedAtAction(nameof(GetAllCheeseProducts), new { new_cheese_product_dto._id }, CheeseProductModelMapper.ToDto(new_cheese_product_dto));
             } catch (PostCheeseProductException post_cheese_exception)
             {
                 return BadRequest(post_cheese_exception.Message);
@@ -103,7 +109,9 @@ namespace PZCheeseriaRestApi.Controllers
             }
         }
 
+        [EnableCors]
         [HttpPut("{id:length(24)}")]
+        [Route("UpdateCheeseProduct")]
         public async Task<IActionResult> UpdateCheeseProduct(string id, [FromBody] CheeseProductDto updated_cheese_product_dto)
         {
             try
@@ -132,7 +140,9 @@ namespace PZCheeseriaRestApi.Controllers
             }
         }
 
+        [EnableCors]
         [HttpDelete("{id:length(24)}")]
+        [Route("DeleteCheeseProduct")]
         public async Task<IActionResult> DeleteCheeseProduct(string id)
         {
             try
