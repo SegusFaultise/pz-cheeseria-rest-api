@@ -5,15 +5,9 @@ name: .NET
 
 on:
   push:
-<<<<<<< HEAD:.github/workflows/dotnet_test_action.yml
     branches: [ "development" ]
   pull_request:
     branches: [ "development" ]
-=======
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
->>>>>>> deployment:.github/workflows/azure_deploy_action.yml
 
 jobs:
   build:
@@ -28,9 +22,6 @@ jobs:
         dotnet-version: 8.0.x
     - name: Restore dependencies
       run: dotnet restore
-<<<<<<< HEAD:.github/workflows/dotnet_test_action.yml
-   
-=======
->>>>>>> deployment:.github/workflows/azure_deploy_action.yml
+      
     - name: Build
       run: dotnet build --no-restore
