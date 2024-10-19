@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 // Enable CORS with a policy that allows all origins, headers, and methods.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowAzureApp", policy =>
     {
         policy.AllowAnyOrigin()
               .AllowAnyMethod()
