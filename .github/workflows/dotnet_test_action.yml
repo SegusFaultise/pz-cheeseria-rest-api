@@ -20,8 +20,11 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
+    - name: Opening mongo_docker dir
+      run: cd mongo_docker
+
     - name: Run mongodb docker instance
-      run: cd mongo_docker && sudo ./run_local_mongodb
+      run:  chmod +x ./run_local_mongodb && ./run_local_mongodb
 
     - name: Test
       run: dotnet test --no-build --verbosity normal
