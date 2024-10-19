@@ -6,7 +6,7 @@ namespace PZCheeseriaRestApi.Models.Dto
     {
         public required string cheese_product_name { get; set; }
 
-        public decimal cheese_product_price_per_kilo { get; set; }
+        public double cheese_product_price_per_kilo { get; set; }
 
         public required string cheese_product_color { get; set; }
 
@@ -16,6 +16,6 @@ namespace PZCheeseriaRestApi.Models.Dto
 
         public required string cheese_product_origin { get; set; }
 
-        public required string cheese_product_stock { get; set; }
+        public required int cheese_product_stock { get; set; }
     }
 }

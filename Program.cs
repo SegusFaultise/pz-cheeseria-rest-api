@@ -23,7 +23,7 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
 });
 
 // Register CheeseService to interact with the cheese collection
-builder.Services.AddSingleton<CheeseService>();
+builder.Services.AddSingleton<CheeseProductService>();
 
 var app = builder.Build();
 

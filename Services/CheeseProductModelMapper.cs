@@ -3,7 +3,7 @@ using PZCheeseriaRestApi.Models;
 
 namespace PZCheeseriaRestApi.Services
 {
-    public static class CheeseModelMapper
+    public static class CheeseProductModelMapper
     {
         public static CheeseProductDto ToDto(CheeseProductModel cheese_product_model)
         {
@@ -23,7 +23,7 @@ namespace PZCheeseriaRestApi.Services
         {
             return new CheeseProductModel
             {
-                id = string.Empty,
+                _id =  string.Empty,
 
                 cheese_product_name = cheese_dto.cheese_product_name,
                 cheese_product_color = cheese_dto.cheese_product_color,

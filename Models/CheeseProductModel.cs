@@ -20,13 +20,13 @@ namespace PZCheeseriaRestApi.Models
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public required string id { get; set; }
+        public required string _id { get; set; }
 
         [BsonElement(CHEESE_PRODUCT_NAME)]
         public required string cheese_product_name { get; set; }
 
         [BsonElement(CHEESE_PRODUCT_PRICE_PER_KILO)]
-        public decimal cheese_product_price_per_kilo { get; set; }
+        public required double cheese_product_price_per_kilo { get; set; }
 
         [BsonElement(CHEESE_PRODUCT_COLOR)]
         public required string cheese_product_color { get; set; }
@@ -41,7 +41,7 @@ namespace PZCheeseriaRestApi.Models
         public required string cheese_product_origin { get; set; }   
 
         [BsonElement(CHEESE_PRODUCT_STOCK)]
-        public required string cheese_product_stock { get; set; }
+        public required int cheese_product_stock { get; set; }
 
         [BsonElement(CREATED_AT)]
         public string created_at { get; set; } = DateTime.UtcNow.ToString();
