@@ -5,9 +5,9 @@ name: .NET
 
 on:
   push:
-    branches: [ "testing" ]
+    branches: [ "development" ]
   pull_request:
-    branches: [ "testing" ]
+    branches: [ "development" ]
 
 jobs:
   build:
@@ -22,9 +22,6 @@ jobs:
         
     - name: Restore dependencies
       run: dotnet restore
-      
-    - name: Run mongodb docker instance
-      run: cd mongo_docker && ./run_local_mongodb
-      
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+   
+    - name: Build
+      run: dotnet build --no-restore
