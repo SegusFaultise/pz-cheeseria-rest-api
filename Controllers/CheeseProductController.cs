@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using PZCheeseriaRestApi.Exceptions;
 using PZCheeseriaRestApi.Models;
 using PZCheeseriaRestApi.Models.Dto;
@@ -9,6 +10,7 @@ namespace PZCheeseriaRestApi.Controllers
 {
     [ApiController]
     [Route("pz-cheeseria-rest-api/[controller]")]
+    [EnableCors("AllowAll")]
     public class CheeseProductController : ControllerBase
     {
         const int SEVER_ERROR_RESPONSE_CODE = 500;
