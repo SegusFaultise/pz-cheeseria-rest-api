@@ -9,7 +9,7 @@ using PZCheeseriaRestApi.Services;
 namespace PZCheeseriaRestApi.Controllers
 {
     [ApiController]
-    [Route("pz-cheeseria-rest-api/[controller]")]
+    [Route("~/pz-cheeseria-rest-api/[controller]")]
     public class CheeseProductController : ControllerBase
     {
         const int SEVER_ERROR_RESPONSE_CODE = 500;
@@ -25,6 +25,12 @@ namespace PZCheeseriaRestApi.Controllers
         [EnableCors]
         [HttpGet]
         [Route("GetAllCheeseProducts")]
+        /// <summary>
+        /// Authenticates the user to allow certian actions
+        /// </summary>
+        /// <param name="api_token"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
         public async Task<ActionResult<List<CheeseProductModel>>> GetAllCheeseProducts() =>
             await _cheese_product_service.GetAllAsync();
 

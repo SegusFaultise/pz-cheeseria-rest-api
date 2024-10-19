@@ -1,27 +1,11 @@
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using PZCheeseriaRestApi.Services;
 using PZCheeseriaRestApi.Services.Settings;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddControllers();
-
-// Enable CORS with a policy that allows all origins, headers, and methods.
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAzureApp", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<MongoDBSettings>(
     builder.Configuration.GetSection("MongoDBSettings"));
@@ -36,13 +20,37 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
 // Register CheeseService to interact with the cheese collection
 builder.Services.AddSingleton<CheeseProductService>();
 
+// Add services to the container.
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc(
+    "v1",
+    new OpenApiInfo
+    {
+        Version = "v1.0",
+        Title = "pz-cheeseria-rest-api",
+        Description = @"The backend API for PZ Cheeseria, a cheese store MVP. 
+                        The API provides CRUD operations for managing the store's cheese selection."
+    });
+
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+    //c.IncludeXmlComments(xmlPath);
+});
+
 builder.Services.AddCors(
 options =>
 {
     options.AddDefaultPolicy(
     builder =>
     {
-        builder.WithOrigins("https://www.google.com/")
+        builder.WithOrigins(
+            "https://localhost:7281")
         .AllowAnyHeader()
         .AllowAnyMethod();
     });
@@ -50,25 +58,20 @@ options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-else
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
+//app.UseExceptionHandler("/Home/Error");
+//app.UseHsts();
+
 app.UseCors(
-    builder =>
-    {
-        builder
-        .AllowAnyOrigin()
-        .AllowAnyHeader()
-        .AllowAnyMethod();
-    }
+builder =>
+{
+    builder
+    .AllowAnyOrigin()
+    .AllowAnyHeader()
+    .AllowAnyMethod();
+}
 );
 
 app.UseHttpsRedirection();
