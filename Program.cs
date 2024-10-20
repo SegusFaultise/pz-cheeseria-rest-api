@@ -48,7 +48,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("ProductionPolicy", builder =>
     {
-        builder.WithOrigins("https://yourproductiondomain.com")
+        builder.WithOrigins("https://yourproductiondomain.com", "http://localhost:5173/pz-cheeseria-web-app/")
                  .AllowAnyHeader()
                  .AllowAnyMethod();
     });
