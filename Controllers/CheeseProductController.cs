@@ -87,11 +87,11 @@ namespace PZCheeseriaRestApi.Controllers
             try
             {
                 var new_cheese_product_name = await _cheese_product_service.GetByCheeseProductNameAsync(cheese_product_name) ??
-                    throw new GetCheeseProductByIdException($"Cheese product with name {cheese_product_name} not found.");
+                    throw new GetCheeseProductByNameException($"Cheese product with name {cheese_product_name} not found.");
 
                 return Ok(new_cheese_product_name);
             }
-            catch (GetCheeseProductByIdException get_cheese_by_id_exception)
+            catch (GetCheeseProductByNameException get_cheese_by_id_exception)
             {
                 return BadRequest(get_cheese_by_id_exception.Message);
             }
